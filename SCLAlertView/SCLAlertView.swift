@@ -126,6 +126,10 @@ public class SCLAlertView: UIViewController {
         let kTextFont: UIFont
         let kButtonFont: UIFont
         
+        // Alignment
+        let kTitleAlignment: NSTextAlignment
+        let kTextAlignment: NSTextAlignment
+        
         // UI Options
         var showCloseButton: Bool
         var showCircularIcon: Bool
@@ -137,7 +141,7 @@ public class SCLAlertView: UIViewController {
         // Actions
         var hideWhenBackgroundViewIsTapped: Bool
         
-        public init(kDefaultShadowOpacity: CGFloat = 0.7, kCircleTopPosition: CGFloat = -12.0, kCircleBackgroundTopPosition: CGFloat = -15.0, kCircleHeight: CGFloat = 56.0, kCircleIconHeight: CGFloat = 20.0, kTitleTop:CGFloat = 30.0, kTitleHeight:CGFloat = 25.0, kWindowWidth: CGFloat = 240.0, kWindowHeight: CGFloat = 178.0, kTextHeight: CGFloat = 90.0, kTextFieldHeight: CGFloat = 45.0, kTextViewdHeight: CGFloat = 80.0, kButtonHeight: CGFloat = 45.0, kTitleFont: UIFont = UIFont.systemFontOfSize(20), kTextFont: UIFont = UIFont.systemFontOfSize(14), kButtonFont: UIFont = UIFont.boldSystemFontOfSize(14), showCloseButton: Bool = true, showCircularIcon: Bool = true, shouldAutoDismiss: Bool = true, contentViewCornerRadius: CGFloat = 5.0, fieldCornerRadius: CGFloat = 3.0, buttonCornerRadius: CGFloat = 3.0, hideWhenBackgroundViewIsTapped: Bool = false, contentViewColor: UIColor = UIColorFromRGB(0xFFFFFF), contentViewBorderColor: UIColor = UIColorFromRGB(0xCCCCCC), titleColor: UIColor = UIColorFromRGB(0x4D4D4D)) {
+        public init(kDefaultShadowOpacity: CGFloat = 0.7, kCircleTopPosition: CGFloat = -12.0, kCircleBackgroundTopPosition: CGFloat = -15.0, kCircleHeight: CGFloat = 56.0, kCircleIconHeight: CGFloat = 20.0, kTitleTop:CGFloat = 30.0, kTitleHeight:CGFloat = 25.0, kWindowWidth: CGFloat = 240.0, kWindowHeight: CGFloat = 178.0, kTextHeight: CGFloat = 90.0, kTextFieldHeight: CGFloat = 45.0, kTextViewdHeight: CGFloat = 80.0, kButtonHeight: CGFloat = 45.0, kTitleFont: UIFont = UIFont.systemFontOfSize(20), kTextFont: UIFont = UIFont.systemFontOfSize(14), kButtonFont: UIFont = UIFont.boldSystemFontOfSize(14), showCloseButton: Bool = true, showCircularIcon: Bool = true, shouldAutoDismiss: Bool = true, contentViewCornerRadius: CGFloat = 5.0, fieldCornerRadius: CGFloat = 3.0, buttonCornerRadius: CGFloat = 3.0, hideWhenBackgroundViewIsTapped: Bool = false, contentViewColor: UIColor = UIColorFromRGB(0xFFFFFF), contentViewBorderColor: UIColor = UIColorFromRGB(0xCCCCCC), titleColor: UIColor = UIColorFromRGB(0x4D4D4D), kTitleAlignment: NSTextAlignment = .Center, kTextAlignment: NSTextAlignment = .Center) {
             
             self.kDefaultShadowOpacity = kDefaultShadowOpacity
             self.kCircleTopPosition = kCircleTopPosition
@@ -159,6 +163,9 @@ public class SCLAlertView: UIViewController {
             self.kTitleFont = kTitleFont
             self.kTextFont = kTextFont
             self.kButtonFont = kButtonFont
+            
+            self.kTitleAlignment = kTitleAlignment
+            self.kTextAlignment = kTextAlignment
             
             self.showCloseButton = showCloseButton
             self.showCircularIcon = showCircularIcon
@@ -253,12 +260,12 @@ public class SCLAlertView: UIViewController {
         circleView.layer.cornerRadius = circleView.frame.size.height / 2
         // Title
         labelTitle.numberOfLines = 1
-        labelTitle.textAlignment = .Center
+        labelTitle.textAlignment = appearance.kTitleAlignment
         labelTitle.font = appearance.kTitleFont
         labelTitle.frame = CGRect(x:12, y:appearance.kTitleTop, width: appearance.kWindowWidth - 24, height:appearance.kTitleHeight)
         // View text
         viewText.editable = false
-        viewText.textAlignment = .Center
+        viewText.textAlignment = appearance.kTextAlignment
         viewText.textContainerInset = UIEdgeInsetsZero
         viewText.textContainer.lineFragmentPadding = 0;
         viewText.font = appearance.kTextFont
