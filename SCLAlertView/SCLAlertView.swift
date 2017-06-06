@@ -96,8 +96,6 @@ public class SCLAlertViewResponder {
     }
 }
 
-let kCircleHeightBackground: CGFloat = 62.0
-
 public typealias DismissBlock = () -> Void
 
 // The Main Class
@@ -107,6 +105,7 @@ public class SCLAlertView: UIViewController {
         let kDefaultShadowOpacity: CGFloat
         let kCircleTopPosition: CGFloat
         let kCircleBackgroundTopPosition: CGFloat
+        let kCircleHeightBackground: CGFloat
         let kCircleHeight: CGFloat
         let kCircleIconHeight: CGFloat
         let kTitleTop:CGFloat
@@ -145,11 +144,12 @@ public class SCLAlertView: UIViewController {
         // Actions
         var hideWhenBackgroundViewIsTapped: Bool
         
-        public init(kDefaultShadowOpacity: CGFloat = 0.7, kCircleTopPosition: CGFloat = -12.0, kCircleBackgroundTopPosition: CGFloat = -15.0, kCircleHeight: CGFloat = 56.0, kCircleIconHeight: CGFloat = 20.0, kTitleTop:CGFloat = 30.0, kTitleHeight:CGFloat = 25.0, kWindowWidth: CGFloat = 240.0, kWindowHeight: CGFloat = 178.0, kTextHeight: CGFloat = 90.0, kTextFieldHeight: CGFloat = 45.0, kTextViewdHeight: CGFloat = 80.0, kButtonHeight: CGFloat = 45.0, kTitleFont: UIFont = UIFont.systemFontOfSize(20), kTextFont: UIFont = UIFont.systemFontOfSize(14), kButtonFont: UIFont = UIFont.boldSystemFontOfSize(14), showCloseButton: Bool = true, showCircularIcon: Bool = true, shouldAutoDismiss: Bool = true, contentViewCornerRadius: CGFloat = 5.0, fieldCornerRadius: CGFloat = 3.0, buttonCornerRadius: CGFloat = 3.0, hideWhenBackgroundViewIsTapped: Bool = false, contentViewColor: UIColor = UIColorFromRGB(0xFFFFFF), contentViewBorderColor: UIColor = UIColorFromRGB(0xCCCCCC), titleColor: UIColor = UIColorFromRGB(0x4D4D4D), kTitleAlignment: NSTextAlignment = .Center, kTextAlignment: NSTextAlignment = .Center, kHorizontalPadding: CGFloat = 12, kTitleBottomMargin: CGFloat = 14) {
+        public init(kDefaultShadowOpacity: CGFloat = 0.7, kCircleTopPosition: CGFloat = -12.0, kCircleBackgroundTopPosition: CGFloat = -15.0, kCircleHeight: CGFloat = 56.0, kCircleIconHeight: CGFloat = 20.0, kTitleTop:CGFloat = 30.0, kTitleHeight:CGFloat = 25.0, kWindowWidth: CGFloat = 240.0, kWindowHeight: CGFloat = 178.0, kTextHeight: CGFloat = 90.0, kTextFieldHeight: CGFloat = 45.0, kTextViewdHeight: CGFloat = 80.0, kButtonHeight: CGFloat = 45.0, kTitleFont: UIFont = UIFont.systemFontOfSize(20), kTextFont: UIFont = UIFont.systemFontOfSize(14), kButtonFont: UIFont = UIFont.boldSystemFontOfSize(14), showCloseButton: Bool = true, showCircularIcon: Bool = true, shouldAutoDismiss: Bool = true, contentViewCornerRadius: CGFloat = 5.0, fieldCornerRadius: CGFloat = 3.0, buttonCornerRadius: CGFloat = 3.0, hideWhenBackgroundViewIsTapped: Bool = false, contentViewColor: UIColor = UIColorFromRGB(0xFFFFFF), contentViewBorderColor: UIColor = UIColorFromRGB(0xCCCCCC), titleColor: UIColor = UIColorFromRGB(0x4D4D4D), kTitleAlignment: NSTextAlignment = .Center, kTextAlignment: NSTextAlignment = .Center, kHorizontalPadding: CGFloat = 12, kTitleBottomMargin: CGFloat = 14, kCircleHeightBackground: CGFloat = 62) {
             
             self.kDefaultShadowOpacity = kDefaultShadowOpacity
             self.kCircleTopPosition = kCircleTopPosition
             self.kCircleBackgroundTopPosition = kCircleBackgroundTopPosition
+            self.kCircleHeightBackground = kCircleHeightBackground
             self.kCircleHeight = kCircleHeight
             self.kCircleIconHeight = kCircleIconHeight
             self.kTitleTop = kTitleTop
@@ -208,7 +208,7 @@ public class SCLAlertView: UIViewController {
     var labelTitle = UILabel()
     var viewText = UITextView()
     var contentView = UIView()
-    var circleBG = UIView(frame:CGRect(x:0, y:0, width:kCircleHeightBackground, height:kCircleHeightBackground))
+    var circleBG = UIView()
     var circleView = UIView()
     var circleIconView : UIView?
     var duration: NSTimeInterval!
@@ -257,11 +257,12 @@ public class SCLAlertView: UIViewController {
         contentView.addSubview(labelTitle)
         contentView.addSubview(viewText)
         // Circle View
+        circleBG.frame = CGRect(x:0, y:0, width:appearance.kCircleHeightBackground, height:appearance.kCircleHeightBackground)
         circleBG.backgroundColor = UIColor.whiteColor()
         circleBG.layer.cornerRadius = circleBG.frame.size.height / 2
         baseView.addSubview(circleBG)
         circleBG.addSubview(circleView)
-        let x = (kCircleHeightBackground - appearance.kCircleHeight) / 2
+        let x = (appearance.kCircleHeightBackground - appearance.kCircleHeight) / 2
         circleView.frame = CGRect(x:x, y:x, width:appearance.kCircleHeight, height:appearance.kCircleHeight)
         circleView.layer.cornerRadius = circleView.frame.size.height / 2
         // Title
@@ -333,9 +334,9 @@ public class SCLAlertView: UIViewController {
         var y = (sz.height - windowHeight - (appearance.kCircleHeight / 8)) / 2
         contentView.frame = CGRect(x:x, y:y, width:appearance.kWindowWidth, height:windowHeight)
         contentView.layer.cornerRadius = appearance.contentViewCornerRadius
-        y -= kCircleHeightBackground * 0.6
-        x = (sz.width - kCircleHeightBackground) / 2
-        circleBG.frame = CGRect(x:x, y:y+6, width:kCircleHeightBackground, height:kCircleHeightBackground)
+        y -= appearance.kCircleHeightBackground * 0.6
+        x = (sz.width - appearance.kCircleHeightBackground) / 2
+        circleBG.frame = CGRect(x:x, y:y+6, width:appearance.kCircleHeightBackground, height:appearance.kCircleHeightBackground)
         
         //adjust Title frame based on circularIcon show/hide flag
         let titleOffset : CGFloat = appearance.showCircularIcon ? 0.0 : -12.0
