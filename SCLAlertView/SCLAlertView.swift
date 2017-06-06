@@ -98,106 +98,167 @@ public class SCLAlertViewResponder {
 
 public typealias DismissBlock = () -> Void
 
-// The Main Class
-public class SCLAlertView: UIViewController {
+public struct SCLAppearance {
+    let kDefaultShadowOpacity: CGFloat
+    let kCircleTopPosition: CGFloat
+    let kCircleBackgroundTopPosition: CGFloat
+    let kCircleHeightBackground: CGFloat
+    let kCircleHeight: CGFloat
+    let kCircleIconHeight: CGFloat
+    let kTitleTop:CGFloat
+    let kTitleHeight:CGFloat
+    let kWindowWidth: CGFloat
+    var kWindowHeight: CGFloat
+    var kTextHeight: CGFloat
+    let kTextFieldHeight: CGFloat
+    let kTextViewdHeight: CGFloat
+    let kButtonHeight: CGFloat
+    let contentViewColor: UIColor
+    let contentViewBorderColor: UIColor
+    let titleColor: UIColor
+    let kTitleBottomMargin: CGFloat
     
-    public struct SCLAppearance {
-        let kDefaultShadowOpacity: CGFloat
-        let kCircleTopPosition: CGFloat
-        let kCircleBackgroundTopPosition: CGFloat
-        let kCircleHeightBackground: CGFloat
-        let kCircleHeight: CGFloat
-        let kCircleIconHeight: CGFloat
-        let kTitleTop:CGFloat
-        let kTitleHeight:CGFloat
-        let kWindowWidth: CGFloat
-        var kWindowHeight: CGFloat
-        var kTextHeight: CGFloat
-        let kTextFieldHeight: CGFloat
-        let kTextViewdHeight: CGFloat
-        let kButtonHeight: CGFloat
-        let contentViewColor: UIColor
-        let contentViewBorderColor: UIColor
-        let titleColor: UIColor
-        let kTitleBottomMargin: CGFloat
-        
-        // Fonts
-        let kTitleFont: UIFont
-        let kTextFont: UIFont
-        let kButtonFont: UIFont
-        
-        // Attributes
-        var kTitleAttributes: [String: AnyObject]?
-        var kTextAttributes: [String: AnyObject]?
-        
-        // Alignment
-        let kTitleAlignment: NSTextAlignment
-        let kTextAlignment: NSTextAlignment
-        
-        // Padding
-        let kHorizontalPadding: CGFloat
-        
-        // UI Options
-        var showCloseButton: Bool
-        var showCircularIcon: Bool
-        var shouldAutoDismiss: Bool // Set this false to 'Disable' Auto hideView when SCLButton is tapped
-        var contentViewCornerRadius : CGFloat
-        var fieldCornerRadius : CGFloat
-        var buttonCornerRadius : CGFloat
-        
-        // Actions
-        var hideWhenBackgroundViewIsTapped: Bool
-        
-        public init(kDefaultShadowOpacity: CGFloat = 0.7, kCircleTopPosition: CGFloat = -12.0, kCircleBackgroundTopPosition: CGFloat = -15.0, kCircleHeight: CGFloat = 56.0, kCircleIconHeight: CGFloat = 20.0, kTitleTop:CGFloat = 30.0, kTitleHeight:CGFloat = 25.0, kWindowWidth: CGFloat = 240.0, kWindowHeight: CGFloat = 178.0, kTextHeight: CGFloat = 90.0, kTextFieldHeight: CGFloat = 45.0, kTextViewdHeight: CGFloat = 80.0, kButtonHeight: CGFloat = 45.0, kTitleFont: UIFont = UIFont.systemFontOfSize(20), kTextFont: UIFont = UIFont.systemFontOfSize(14), kButtonFont: UIFont = UIFont.boldSystemFontOfSize(14), showCloseButton: Bool = true, showCircularIcon: Bool = true, shouldAutoDismiss: Bool = true, contentViewCornerRadius: CGFloat = 5.0, fieldCornerRadius: CGFloat = 3.0, buttonCornerRadius: CGFloat = 3.0, hideWhenBackgroundViewIsTapped: Bool = false, contentViewColor: UIColor = UIColorFromRGB(0xFFFFFF), contentViewBorderColor: UIColor = UIColorFromRGB(0xCCCCCC), titleColor: UIColor = UIColorFromRGB(0x4D4D4D), kTitleAlignment: NSTextAlignment = .Center, kTextAlignment: NSTextAlignment = .Center, kHorizontalPadding: CGFloat = 12, kTitleBottomMargin: CGFloat = 14, kCircleHeightBackground: CGFloat = 62, kTitleAttributes: [String: AnyObject]? = nil, kTextAttributes: [String: AnyObject]? = nil) {
-            
-            self.kDefaultShadowOpacity = kDefaultShadowOpacity
-            self.kCircleTopPosition = kCircleTopPosition
-            self.kCircleBackgroundTopPosition = kCircleBackgroundTopPosition
-            self.kCircleHeightBackground = kCircleHeightBackground
-            self.kCircleHeight = kCircleHeight
-            self.kCircleIconHeight = kCircleIconHeight
-            self.kTitleTop = kTitleTop
-            self.kTitleHeight = kTitleHeight
-            self.kWindowWidth = kWindowWidth
-            self.kWindowHeight = kWindowHeight
-            self.kTextHeight = kTextHeight
-            self.kTextFieldHeight = kTextFieldHeight
-            self.kTextViewdHeight = kTextViewdHeight
-            self.kButtonHeight = kButtonHeight
-            self.contentViewColor = contentViewColor
-            self.contentViewBorderColor = contentViewBorderColor
-            self.titleColor = titleColor
-            
-            self.kTitleFont = kTitleFont
-            self.kTextFont = kTextFont
-            self.kButtonFont = kButtonFont
-            
-            self.kTitleAlignment = kTitleAlignment
-            self.kTextAlignment = kTextAlignment
-            self.kHorizontalPadding = kHorizontalPadding
-            self.kTitleBottomMargin = kTitleBottomMargin
-            
-            self.kTitleAttributes = kTitleAttributes
-            self.kTextAttributes = kTextAttributes
-            
-            self.showCloseButton = showCloseButton
-            self.showCircularIcon = showCircularIcon
-            self.shouldAutoDismiss = shouldAutoDismiss
-            self.contentViewCornerRadius = contentViewCornerRadius
-            self.fieldCornerRadius = fieldCornerRadius
-            self.buttonCornerRadius = buttonCornerRadius
-            
-            self.hideWhenBackgroundViewIsTapped = hideWhenBackgroundViewIsTapped
-        }
-        
-        mutating func setkWindowHeight(kWindowHeight:CGFloat) {
-            self.kWindowHeight = kWindowHeight
-        }
-        
-        mutating func setkTextHeight(kTextHeight:CGFloat) {
-            self.kTextHeight = kTextHeight
+    // Icon Options
+    let kCircleIconImage: UIImage?
+    let kCircleIconBackgroundColor: UIColor?
+    
+    // Fonts
+    let kTitleFont: UIFont
+    let kTextFont: UIFont
+    let kButtonFont: UIFont
+    
+    // Attributes
+    var kTitleAttributes: [String: AnyObject]?
+    var kTextAttributes: [String: AnyObject]?
+    
+    // Alignment
+    let kTitleAlignment: NSTextAlignment
+    let kTextAlignment: NSTextAlignment
+    
+    // Padding
+    let kHorizontalPadding: CGFloat
+    
+    // UI Options
+    var showCloseButton: Bool
+    var showCircularIcon: Bool
+    var shouldAutoDismiss: Bool // Set this false to 'Disable' Auto hideView when SCLButton is tapped
+    var contentViewCornerRadius : CGFloat
+    var fieldCornerRadius : CGFloat
+    var buttonCornerRadius : CGFloat
+    
+    // Actions
+    var hideWhenBackgroundViewIsTapped: Bool
+    
+    public static var success: SCLAppearance {
+        get {
+            return SCLAppearance(
+                kCircleIconBackgroundColor: UIColorFromRGB(SCLAlertViewStyle.Success.defaultColorInt),
+                kCircleIconImage: SCLAlertViewStyleKit.imageOfCheckmark
+            )
         }
     }
+    
+    public static var notice: SCLAppearance {
+        get {
+            return SCLAppearance(
+                kCircleIconBackgroundColor: UIColorFromRGB(SCLAlertViewStyle.Notice.defaultColorInt),
+                kCircleIconImage: SCLAlertViewStyleKit.imageOfNotice
+            )
+        }
+    }
+    
+    public static var warning: SCLAppearance {
+        get {
+            return SCLAppearance(
+                kCircleIconBackgroundColor: UIColorFromRGB(SCLAlertViewStyle.Warning.defaultColorInt),
+                kCircleIconImage: SCLAlertViewStyleKit.imageOfWarning
+            )
+        }
+    }
+    
+    public static var error: SCLAppearance {
+        get {
+            return SCLAppearance(
+                kCircleIconBackgroundColor: UIColorFromRGB(SCLAlertViewStyle.Error.defaultColorInt),
+                kCircleIconImage: SCLAlertViewStyleKit.imageOfCross
+            )
+        }
+    }
+    
+    public static var info: SCLAppearance {
+        get {
+            return SCLAppearance(
+                kCircleIconBackgroundColor: UIColorFromRGB(SCLAlertViewStyle.Info.defaultColorInt),
+                kCircleIconImage: SCLAlertViewStyleKit.imageOfInfo
+            )
+        }
+    }
+    
+    public static var edit: SCLAppearance {
+        get {
+            return SCLAppearance(
+                kCircleIconBackgroundColor: UIColorFromRGB(SCLAlertViewStyle.Edit.defaultColorInt),
+                kCircleIconImage: SCLAlertViewStyleKit.imageOfEdit
+            )
+        }
+    }
+    
+    public init(kDefaultShadowOpacity: CGFloat = 0.7, kCircleTopPosition: CGFloat = -12.0, kCircleBackgroundTopPosition: CGFloat = -15.0, kCircleHeight: CGFloat = 56.0, kCircleIconHeight: CGFloat = 20.0, kTitleTop:CGFloat = 30.0, kTitleHeight:CGFloat = 25.0, kWindowWidth: CGFloat = 240.0, kWindowHeight: CGFloat = 178.0, kTextHeight: CGFloat = 90.0, kTextFieldHeight: CGFloat = 45.0, kTextViewdHeight: CGFloat = 80.0, kButtonHeight: CGFloat = 45.0, kTitleFont: UIFont = UIFont.systemFontOfSize(20), kTextFont: UIFont = UIFont.systemFontOfSize(14), kButtonFont: UIFont = UIFont.boldSystemFontOfSize(14), showCloseButton: Bool = true, showCircularIcon: Bool = true, shouldAutoDismiss: Bool = true, contentViewCornerRadius: CGFloat = 5.0, fieldCornerRadius: CGFloat = 3.0, buttonCornerRadius: CGFloat = 3.0, hideWhenBackgroundViewIsTapped: Bool = false, contentViewColor: UIColor = UIColorFromRGB(0xFFFFFF), contentViewBorderColor: UIColor = UIColorFromRGB(0xCCCCCC), titleColor: UIColor = UIColorFromRGB(0x4D4D4D), kTitleAlignment: NSTextAlignment = .Center, kTextAlignment: NSTextAlignment = .Center, kHorizontalPadding: CGFloat = 12, kTitleBottomMargin: CGFloat = 14, kCircleHeightBackground: CGFloat = 62, kTitleAttributes: [String: AnyObject]? = nil, kTextAttributes: [String: AnyObject]? = nil, kCircleIconImage: UIImage? = nil, kCircleIconBackgroundColor: UIColor? = nil) {
+        
+        self.kDefaultShadowOpacity = kDefaultShadowOpacity
+        self.kCircleTopPosition = kCircleTopPosition
+        self.kCircleBackgroundTopPosition = kCircleBackgroundTopPosition
+        self.kCircleHeightBackground = kCircleHeightBackground
+        self.kCircleHeight = kCircleHeight
+        self.kCircleIconHeight = kCircleIconHeight
+        self.kTitleTop = kTitleTop
+        self.kTitleHeight = kTitleHeight
+        self.kWindowWidth = kWindowWidth
+        self.kWindowHeight = kWindowHeight
+        self.kTextHeight = kTextHeight
+        self.kTextFieldHeight = kTextFieldHeight
+        self.kTextViewdHeight = kTextViewdHeight
+        self.kButtonHeight = kButtonHeight
+        self.contentViewColor = contentViewColor
+        self.contentViewBorderColor = contentViewBorderColor
+        self.titleColor = titleColor
+        
+        self.kTitleFont = kTitleFont
+        self.kTextFont = kTextFont
+        self.kButtonFont = kButtonFont
+        
+        self.kCircleIconImage = kCircleIconImage
+        self.kCircleIconBackgroundColor = kCircleIconBackgroundColor
+        
+        self.kTitleAlignment = kTitleAlignment
+        self.kTextAlignment = kTextAlignment
+        self.kHorizontalPadding = kHorizontalPadding
+        self.kTitleBottomMargin = kTitleBottomMargin
+        
+        self.kTitleAttributes = kTitleAttributes
+        self.kTextAttributes = kTextAttributes
+        
+        self.showCloseButton = showCloseButton
+        self.showCircularIcon = showCircularIcon
+        self.shouldAutoDismiss = shouldAutoDismiss
+        self.contentViewCornerRadius = contentViewCornerRadius
+        self.fieldCornerRadius = fieldCornerRadius
+        self.buttonCornerRadius = buttonCornerRadius
+        
+        self.hideWhenBackgroundViewIsTapped = hideWhenBackgroundViewIsTapped
+    }
+    
+    mutating func setkWindowHeight(kWindowHeight:CGFloat) {
+        self.kWindowHeight = kWindowHeight
+    }
+    
+    mutating func setkTextHeight(kTextHeight:CGFloat) {
+        self.kTextHeight = kTextHeight
+    }
+}
+
+// The Main Class
+public class SCLAlertView: UIViewController {
     
     var appearance: SCLAppearance!
     
@@ -227,9 +288,13 @@ public class SCLAlertView: UIViewController {
     internal var buttons = [SCLButton]()
     private var selfReference: SCLAlertView?
     
-    public init(appearance: SCLAppearance) {
-        self.appearance = appearance
+    var subtitle: String?
+    
+    public init(appearance: SCLAppearance? = nil, title: String? = nil, subtitle: String? = nil) {
+        self.appearance = appearance ?? SCLAppearance()
         super.init(nibName:nil, bundle:nil)
+        self.title = title
+        self.subtitle = subtitle
         setup()
     }
     
@@ -545,64 +610,8 @@ public class SCLAlertView: UIViewController {
         }
     }
     
-    // showCustom(view, title, subTitle, UIColor, UIImage)
-    public func showCustom(title: String, subTitle: String, color: UIColor, icon: UIImage, closeButtonTitle:String?=nil, duration:NSTimeInterval=0.0, colorStyle: UInt=SCLAlertViewStyle.Success.defaultColorInt, colorTextButton: UInt=0xFFFFFF, circleIconImage: UIImage? = nil, animationStyle: SCLAnimationStyle = .TopToBottom) -> SCLAlertViewResponder {
-        
-        
-        var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
-        
-        color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-        
-        var colorAsUInt32 : UInt32 = 0
-        colorAsUInt32 += UInt32(red * 255.0) << 16 + UInt32(green * 255.0) << 8 + UInt32(blue * 255.0)
-        
-        let colorAsUInt = UInt(colorAsUInt32)
-        
-        return showTitle(title, subTitle: subTitle, duration: duration, completeText:closeButtonTitle, style: .Success, colorStyle: colorAsUInt, colorTextButton: colorTextButton, circleIconImage: icon, animationStyle: animationStyle)
-    }
-    
-    // showSuccess(view, title, subTitle)
-    public func showSuccess(title: String, subTitle: String, closeButtonTitle:String?=nil, duration:NSTimeInterval=0.0, colorStyle: UInt=SCLAlertViewStyle.Success.defaultColorInt, colorTextButton: UInt=0xFFFFFF, circleIconImage: UIImage? = nil, animationStyle: SCLAnimationStyle = .TopToBottom) -> SCLAlertViewResponder {
-        return showTitle(title, subTitle: subTitle, duration: duration, completeText:closeButtonTitle, style: .Success, colorStyle: colorStyle, colorTextButton: colorTextButton, circleIconImage: circleIconImage, animationStyle: animationStyle)
-    }
-    
-    // showError(view, title, subTitle)
-    public func showError(title: String, subTitle: String, closeButtonTitle:String?=nil, duration:NSTimeInterval=0.0, colorStyle: UInt=SCLAlertViewStyle.Error.defaultColorInt, colorTextButton: UInt=0xFFFFFF, circleIconImage: UIImage? = nil, animationStyle: SCLAnimationStyle = .TopToBottom) -> SCLAlertViewResponder {
-        return showTitle(title, subTitle: subTitle, duration: duration, completeText:closeButtonTitle, style: .Error, colorStyle: colorStyle, colorTextButton: colorTextButton, circleIconImage: circleIconImage, animationStyle: animationStyle)
-    }
-    
-    // showNotice(view, title, subTitle)
-    public func showNotice(title: String, subTitle: String, closeButtonTitle:String?=nil, duration:NSTimeInterval=0.0, colorStyle: UInt=SCLAlertViewStyle.Notice.defaultColorInt, colorTextButton: UInt=0xFFFFFF, circleIconImage: UIImage? = nil, animationStyle: SCLAnimationStyle = .TopToBottom) -> SCLAlertViewResponder {
-        return showTitle(title, subTitle: subTitle, duration: duration, completeText:closeButtonTitle, style: .Notice, colorStyle: colorStyle, colorTextButton: colorTextButton, circleIconImage: circleIconImage, animationStyle: animationStyle)
-    }
-    
-    // showWarning(view, title, subTitle)
-    public func showWarning(title: String, subTitle: String, closeButtonTitle:String?=nil, duration:NSTimeInterval=0.0, colorStyle: UInt=SCLAlertViewStyle.Warning.defaultColorInt, colorTextButton: UInt=0x000000, circleIconImage: UIImage? = nil, animationStyle: SCLAnimationStyle = .TopToBottom) -> SCLAlertViewResponder {
-        return showTitle(title, subTitle: subTitle, duration: duration, completeText:closeButtonTitle, style: .Warning, colorStyle: colorStyle, colorTextButton: colorTextButton, circleIconImage: circleIconImage, animationStyle: animationStyle)
-    }
-    
-    // showInfo(view, title, subTitle)
-    public func showInfo(title: String, subTitle: String, closeButtonTitle:String?=nil, duration:NSTimeInterval=0.0, colorStyle: UInt=SCLAlertViewStyle.Info.defaultColorInt, colorTextButton: UInt=0xFFFFFF, circleIconImage: UIImage? = nil, animationStyle: SCLAnimationStyle = .TopToBottom) -> SCLAlertViewResponder {
-        return showTitle(title, subTitle: subTitle, duration: duration, completeText:closeButtonTitle, style: .Info, colorStyle: colorStyle, colorTextButton: colorTextButton, circleIconImage: circleIconImage, animationStyle: animationStyle)
-    }
-    
-    // showWait(view, title, subTitle)
-    public func showWait(title: String, subTitle: String, closeButtonTitle:String?=nil, duration:NSTimeInterval=0.0, colorStyle: UInt?=SCLAlertViewStyle.Wait.defaultColorInt, colorTextButton: UInt=0xFFFFFF, circleIconImage: UIImage? = nil, animationStyle: SCLAnimationStyle = .TopToBottom) -> SCLAlertViewResponder {
-        return showTitle(title, subTitle: subTitle, duration: duration, completeText:closeButtonTitle, style: .Wait, colorStyle: colorStyle, colorTextButton: colorTextButton, circleIconImage: circleIconImage, animationStyle: animationStyle)
-    }
-    
-    public func showEdit(title: String, subTitle: String, closeButtonTitle:String?=nil, duration:NSTimeInterval=0.0, colorStyle: UInt=SCLAlertViewStyle.Edit.defaultColorInt, colorTextButton: UInt=0xFFFFFF, circleIconImage: UIImage? = nil, animationStyle: SCLAnimationStyle = .TopToBottom) -> SCLAlertViewResponder {
-        return showTitle(title, subTitle: subTitle, duration: duration, completeText:closeButtonTitle, style: .Edit, colorStyle: colorStyle, colorTextButton: colorTextButton, circleIconImage: circleIconImage, animationStyle: animationStyle)
-    }
-    
-    // showTitle(view, title, subTitle, style)
-    public func showTitle(title: String, subTitle: String, style: SCLAlertViewStyle, closeButtonTitle:String?=nil, duration:NSTimeInterval=0.0, colorStyle: UInt?=0x000000, colorTextButton: UInt=0xFFFFFF, circleIconImage: UIImage? = nil, animationStyle: SCLAnimationStyle = .TopToBottom) -> SCLAlertViewResponder {
-        
-        return showTitle(title, subTitle: subTitle, duration:duration, completeText:closeButtonTitle, style: style, colorStyle: colorStyle, colorTextButton: colorTextButton, circleIconImage: circleIconImage, animationStyle: animationStyle)
-    }
-    
     // showTitle(view, title, subTitle, duration, style)
-    public func showTitle(title: String, subTitle: String, duration: NSTimeInterval?, completeText: String?, style: SCLAlertViewStyle, colorStyle: UInt?=0x000000, colorTextButton: UInt?=0xFFFFFF, circleIconImage: UIImage? = nil, animationStyle: SCLAnimationStyle = .TopToBottom) -> SCLAlertViewResponder {
+    public func present(duration duration: NSTimeInterval? = nil, animationStyle: SCLAnimationStyle = .TopToBottom) -> SCLAlertViewResponder {
         selfReference = self
         view.alpha = 0
         let rv = UIApplication.sharedApplication().keyWindow! as UIWindow
@@ -612,41 +621,11 @@ public class SCLAlertView: UIViewController {
         
         // Alert colour/icon
         viewColor = UIColor()
-        var iconImage: UIImage?
-        let colorInt = colorStyle ?? style.defaultColorInt
-        viewColor = UIColorFromRGB(colorInt)
-        // Icon style
-        switch style {
-        case .Success:
-            
-            iconImage = checkCircleIconImage(circleIconImage, defaultImage: SCLAlertViewStyleKit.imageOfCheckmark)
-            
-        case .Error:
-            
-            iconImage = checkCircleIconImage(circleIconImage, defaultImage: SCLAlertViewStyleKit.imageOfCross)
-            
-        case .Notice:
-            
-            iconImage = checkCircleIconImage(circleIconImage, defaultImage:SCLAlertViewStyleKit.imageOfNotice)
-            
-        case .Warning:
-            
-            iconImage = checkCircleIconImage(circleIconImage, defaultImage:SCLAlertViewStyleKit.imageOfWarning)
-            
-        case .Info:
-            
-            iconImage = checkCircleIconImage(circleIconImage, defaultImage:SCLAlertViewStyleKit.imageOfInfo)
-            
-        case .Edit:
-            
-            iconImage = checkCircleIconImage(circleIconImage, defaultImage:SCLAlertViewStyleKit.imageOfEdit)
-            
-        case .Wait:
-            iconImage = nil
-        }
+        let iconImage = appearance.kCircleIconImage ?? SCLAlertViewStyleKit.imageOfCheckmark
+        viewColor = appearance.kCircleIconBackgroundColor ?? UIColorFromRGB(0x22B573)
         
         // Title
-        if !title.isEmpty {
+        if let title = title where !title.isEmpty {
             if let attributes = appearance.kTitleAttributes {
                 self.labelTitle.attributedText = NSAttributedString(string: title, attributes: attributes)
             } else {
@@ -655,11 +634,11 @@ public class SCLAlertView: UIViewController {
         }
         
         // Subtitle
-        if !subTitle.isEmpty {
+        if let subtitle = subtitle where !subtitle.isEmpty {
             let attributes = appearance.kTextAttributes ?? [NSFontAttributeName:viewText.font ?? UIFont()]
-            viewText.attributedText = NSAttributedString(string: subTitle, attributes: attributes)
+            viewText.attributedText = NSAttributedString(string: subtitle, attributes: attributes)
             // Adjust text view size, if necessary
-            let str = subTitle as NSString
+            let str = subtitle as NSString
             let sz = CGSize(width: appearance.kWindowWidth - (appearance.kHorizontalPadding * 2), height:90)
             let r = str.boundingRectWithSize(sz, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes:attributes, context:nil)
             let ht = ceil(r.size.height)
@@ -669,11 +648,6 @@ public class SCLAlertView: UIViewController {
             }
         }
         
-        // Done button
-        if appearance.showCloseButton {
-            addButton(completeText ?? "Done", target:self, selector:#selector(SCLAlertView.hideView))
-        }
-        
         //hidden/show circular view based on the ui option
         circleView.hidden = !appearance.showCircularIcon
         circleBG.hidden = !appearance.showCircularIcon
@@ -681,19 +655,12 @@ public class SCLAlertView: UIViewController {
         // Alert view colour and images
         circleView.backgroundColor = viewColor
         // Spinner / icon
-        if style == .Wait {
-            let indicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
-            indicator.startAnimating()
-            circleIconView = indicator
+        if let iconTintColor = iconTintColor {
+            circleIconView = UIImageView(image: iconImage.imageWithRenderingMode(.AlwaysTemplate))
+            circleIconView?.tintColor = iconTintColor
         }
         else {
-            if let iconTintColor = iconTintColor {
-                circleIconView = UIImageView(image: iconImage!.imageWithRenderingMode(.AlwaysTemplate))
-                circleIconView?.tintColor = iconTintColor
-            }
-            else {
-                circleIconView = UIImageView(image: iconImage!)
-            }
+            circleIconView = UIImageView(image: iconImage)
         }
         circleView.addSubview(circleIconView!)
         let x = (appearance.kCircleHeight - appearance.kCircleIconHeight) / 2
@@ -723,7 +690,7 @@ public class SCLAlertView: UIViewController {
                 btn.setTitleColor(customTextColor, forState:UIControlState.Normal)
             } else {
                 // Use default BackgroundColor derived from AlertStyle
-                btn.setTitleColor(UIColorFromRGB(colorTextButton ?? 0xFFFFFF), forState:UIControlState.Normal)
+                btn.setTitleColor(UIColor.whiteColor(), forState:UIControlState.Normal)
             }
         }
         
