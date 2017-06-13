@@ -137,7 +137,7 @@ public struct SCLAppearance {
     let kTextAlignment: NSTextAlignment
     
     // Padding
-    let kHorizontalPadding: CGFloat
+    let padding: CGFloat
     
     // UI Options
     var showCloseButton: Bool
@@ -204,7 +204,7 @@ public struct SCLAppearance {
         }
     }
     
-    public init(kDefaultShadowOpacity: CGFloat = 0.7, kCircleTopPosition: CGFloat = -12.0, kCircleBackgroundTopPosition: CGFloat = -15.0, kCircleHeight: CGFloat = 56.0, kCircleIconHeight: CGFloat = 20.0, kTitleTop:CGFloat = 30.0, kTitleHeight:CGFloat = 25.0, kWindowWidth: CGFloat = 240.0, kWindowHeight: CGFloat = 178.0, kTextHeight: CGFloat = 90.0, kTextFieldHeight: CGFloat = 45.0, kTextViewdHeight: CGFloat = 80.0, kButtonHeight: CGFloat = 45.0, kTitleFont: UIFont = UIFont.systemFontOfSize(20), kTextFont: UIFont = UIFont.systemFontOfSize(14), kButtonFont: UIFont = UIFont.boldSystemFontOfSize(14), showCloseButton: Bool = true, showCircularIcon: Bool = true, shouldAutoDismiss: Bool = true, contentViewCornerRadius: CGFloat = 5.0, fieldCornerRadius: CGFloat = 3.0, buttonCornerRadius: CGFloat = 3.0, hideWhenBackgroundViewIsTapped: Bool = false, contentViewColor: UIColor = UIColorFromRGB(0xFFFFFF), contentViewBorderColor: UIColor = UIColorFromRGB(0xCCCCCC), titleColor: UIColor = UIColorFromRGB(0x4D4D4D), kTitleAlignment: NSTextAlignment = .Center, kTextAlignment: NSTextAlignment = .Center, kHorizontalPadding: CGFloat = 12, kTitleBottomMargin: CGFloat = 14, kCircleHeightBackground: CGFloat = 62, kTitleAttributes: [String: AnyObject]? = nil, kTextAttributes: [String: AnyObject]? = nil, kCircleIconImage: UIImage? = nil, kCircleIconBackgroundColor: UIColor? = nil, buttonSeparatorColor: UIColor? = nil) {
+    public init(kDefaultShadowOpacity: CGFloat = 0.7, kCircleTopPosition: CGFloat = -12.0, kCircleBackgroundTopPosition: CGFloat = -15.0, kCircleHeight: CGFloat = 56.0, kCircleIconHeight: CGFloat = 20.0, kTitleTop:CGFloat = 30.0, kTitleHeight:CGFloat = 25.0, kWindowWidth: CGFloat = 240.0, kWindowHeight: CGFloat = 178.0, kTextHeight: CGFloat = 90.0, kTextFieldHeight: CGFloat = 45.0, kTextViewdHeight: CGFloat = 80.0, kButtonHeight: CGFloat = 45.0, kTitleFont: UIFont = UIFont.systemFontOfSize(20), kTextFont: UIFont = UIFont.systemFontOfSize(14), kButtonFont: UIFont = UIFont.boldSystemFontOfSize(14), showCloseButton: Bool = true, showCircularIcon: Bool = true, shouldAutoDismiss: Bool = true, contentViewCornerRadius: CGFloat = 5.0, fieldCornerRadius: CGFloat = 3.0, buttonCornerRadius: CGFloat = 3.0, hideWhenBackgroundViewIsTapped: Bool = false, contentViewColor: UIColor = UIColorFromRGB(0xFFFFFF), contentViewBorderColor: UIColor = UIColorFromRGB(0xCCCCCC), titleColor: UIColor = UIColorFromRGB(0x4D4D4D), kTitleAlignment: NSTextAlignment = .Center, kTextAlignment: NSTextAlignment = .Center, padding: CGFloat = 12, kTitleBottomMargin: CGFloat = 14, kCircleHeightBackground: CGFloat = 62, kTitleAttributes: [String: AnyObject]? = nil, kTextAttributes: [String: AnyObject]? = nil, kCircleIconImage: UIImage? = nil, kCircleIconBackgroundColor: UIColor? = nil, buttonSeparatorColor: UIColor? = nil) {
         
         self.kDefaultShadowOpacity = kDefaultShadowOpacity
         self.kCircleTopPosition = kCircleTopPosition
@@ -233,7 +233,7 @@ public struct SCLAppearance {
         
         self.kTitleAlignment = kTitleAlignment
         self.kTextAlignment = kTextAlignment
-        self.kHorizontalPadding = kHorizontalPadding
+        self.padding = padding
         self.kTitleBottomMargin = kTitleBottomMargin
         
         self.kTitleAttributes = kTitleAttributes
@@ -344,7 +344,7 @@ public class SCLAlertView: UIViewController {
         labelTitle.numberOfLines = 1
         labelTitle.textAlignment = appearance.kTitleAlignment
         labelTitle.font = appearance.kTitleFont
-        labelTitle.frame = CGRect(x:appearance.kHorizontalPadding, y:appearance.kTitleTop, width: appearance.kWindowWidth - (appearance.kHorizontalPadding * 2), height:appearance.kTitleHeight)
+        labelTitle.frame = CGRect(x:appearance.padding, y:appearance.kTitleTop, width: appearance.kWindowWidth - (appearance.padding * 2), height:appearance.kTitleHeight)
         // View text
         viewText.editable = false
         viewText.textAlignment = appearance.kTextAlignment
@@ -371,14 +371,14 @@ public class SCLAlertView: UIViewController {
         // Set background frame
         view.frame.size = sz
         
-        let totalHorizontalPadding = appearance.kHorizontalPadding * 2
+        let totalHorizontalPadding = appearance.padding * 2
         
         // computing the right size to use for the textView
         let maxHeight = sz.height - 100 // max overall height
         var consumedHeight = CGFloat(0)
         consumedHeight += appearance.kTitleTop + appearance.kTitleHeight + appearance.kTitleBottomMargin
         // space separating buttons from the content above + below
-        consumedHeight += 14
+        consumedHeight += appearance.padding
         if buttons.count == 2 {
             consumedHeight += appearance.kButtonHeight
         } else {
@@ -426,17 +426,17 @@ public class SCLAlertView: UIViewController {
         
         // Subtitle
         y = appearance.kTitleTop + appearance.kTitleHeight + titleOffset + appearance.kTitleBottomMargin
-        viewText.frame = CGRect(x:appearance.kHorizontalPadding, y:y, width: appearance.kWindowWidth - totalHorizontalPadding, height:appearance.kTextHeight)
-        viewText.frame = CGRect(x:appearance.kHorizontalPadding, y:y, width: viewTextWidth, height:viewTextHeight)
+        viewText.frame = CGRect(x:appearance.padding, y:y, width: appearance.kWindowWidth - totalHorizontalPadding, height:appearance.kTextHeight)
+        viewText.frame = CGRect(x:appearance.padding, y:y, width: viewTextWidth, height:viewTextHeight)
         // Text fields
-        y += viewTextHeight + 14.0
+        y += viewTextHeight + appearance.padding
         for txt in inputs {
-            txt.frame = CGRect(x:appearance.kHorizontalPadding, y:y, width:appearance.kWindowWidth - totalHorizontalPadding, height:30)
+            txt.frame = CGRect(x:appearance.padding, y:y, width:appearance.kWindowWidth - totalHorizontalPadding, height:30)
             txt.layer.cornerRadius = appearance.fieldCornerRadius
             y += appearance.kTextFieldHeight
         }
         for txt in input {
-            txt.frame = CGRect(x:appearance.kHorizontalPadding, y:y, width:appearance.kWindowWidth - totalHorizontalPadding, height:70)
+            txt.frame = CGRect(x:appearance.padding, y:y, width:appearance.kWindowWidth - totalHorizontalPadding, height:70)
             //txt.layer.cornerRadius = fieldCornerRadius
             y += appearance.kTextViewdHeight
         }
@@ -679,7 +679,7 @@ public class SCLAlertView: UIViewController {
             viewText.attributedText = NSAttributedString(string: subtitle, attributes: attributes)
             // Adjust text view size, if necessary
             let str = subtitle as NSString
-            let sz = CGSize(width: appearance.kWindowWidth - (appearance.kHorizontalPadding * 2), height:90)
+            let sz = CGSize(width: appearance.kWindowWidth - (appearance.padding * 2), height:90)
             let r = str.boundingRectWithSize(sz, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes:attributes, context:nil)
             let ht = ceil(r.size.height)
             if ht < appearance.kTextHeight {
