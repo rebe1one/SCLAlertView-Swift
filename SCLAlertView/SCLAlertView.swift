@@ -117,6 +117,7 @@ public struct SCLAppearance {
     let contentViewBorderColor: UIColor
     let titleColor: UIColor
     let kTitleBottomMargin: CGFloat
+    let buttonSeparatorColor: UIColor
     
     // Icon Options
     let kCircleIconImage: UIImage?
@@ -203,7 +204,7 @@ public struct SCLAppearance {
         }
     }
     
-    public init(kDefaultShadowOpacity: CGFloat = 0.7, kCircleTopPosition: CGFloat = -12.0, kCircleBackgroundTopPosition: CGFloat = -15.0, kCircleHeight: CGFloat = 56.0, kCircleIconHeight: CGFloat = 20.0, kTitleTop:CGFloat = 30.0, kTitleHeight:CGFloat = 25.0, kWindowWidth: CGFloat = 240.0, kWindowHeight: CGFloat = 178.0, kTextHeight: CGFloat = 90.0, kTextFieldHeight: CGFloat = 45.0, kTextViewdHeight: CGFloat = 80.0, kButtonHeight: CGFloat = 45.0, kTitleFont: UIFont = UIFont.systemFontOfSize(20), kTextFont: UIFont = UIFont.systemFontOfSize(14), kButtonFont: UIFont = UIFont.boldSystemFontOfSize(14), showCloseButton: Bool = true, showCircularIcon: Bool = true, shouldAutoDismiss: Bool = true, contentViewCornerRadius: CGFloat = 5.0, fieldCornerRadius: CGFloat = 3.0, buttonCornerRadius: CGFloat = 3.0, hideWhenBackgroundViewIsTapped: Bool = false, contentViewColor: UIColor = UIColorFromRGB(0xFFFFFF), contentViewBorderColor: UIColor = UIColorFromRGB(0xCCCCCC), titleColor: UIColor = UIColorFromRGB(0x4D4D4D), kTitleAlignment: NSTextAlignment = .Center, kTextAlignment: NSTextAlignment = .Center, kHorizontalPadding: CGFloat = 12, kTitleBottomMargin: CGFloat = 14, kCircleHeightBackground: CGFloat = 62, kTitleAttributes: [String: AnyObject]? = nil, kTextAttributes: [String: AnyObject]? = nil, kCircleIconImage: UIImage? = nil, kCircleIconBackgroundColor: UIColor? = nil) {
+    public init(kDefaultShadowOpacity: CGFloat = 0.7, kCircleTopPosition: CGFloat = -12.0, kCircleBackgroundTopPosition: CGFloat = -15.0, kCircleHeight: CGFloat = 56.0, kCircleIconHeight: CGFloat = 20.0, kTitleTop:CGFloat = 30.0, kTitleHeight:CGFloat = 25.0, kWindowWidth: CGFloat = 240.0, kWindowHeight: CGFloat = 178.0, kTextHeight: CGFloat = 90.0, kTextFieldHeight: CGFloat = 45.0, kTextViewdHeight: CGFloat = 80.0, kButtonHeight: CGFloat = 45.0, kTitleFont: UIFont = UIFont.systemFontOfSize(20), kTextFont: UIFont = UIFont.systemFontOfSize(14), kButtonFont: UIFont = UIFont.boldSystemFontOfSize(14), showCloseButton: Bool = true, showCircularIcon: Bool = true, shouldAutoDismiss: Bool = true, contentViewCornerRadius: CGFloat = 5.0, fieldCornerRadius: CGFloat = 3.0, buttonCornerRadius: CGFloat = 3.0, hideWhenBackgroundViewIsTapped: Bool = false, contentViewColor: UIColor = UIColorFromRGB(0xFFFFFF), contentViewBorderColor: UIColor = UIColorFromRGB(0xCCCCCC), titleColor: UIColor = UIColorFromRGB(0x4D4D4D), kTitleAlignment: NSTextAlignment = .Center, kTextAlignment: NSTextAlignment = .Center, kHorizontalPadding: CGFloat = 12, kTitleBottomMargin: CGFloat = 14, kCircleHeightBackground: CGFloat = 62, kTitleAttributes: [String: AnyObject]? = nil, kTextAttributes: [String: AnyObject]? = nil, kCircleIconImage: UIImage? = nil, kCircleIconBackgroundColor: UIColor? = nil, buttonSeparatorColor: UIColor? = nil) {
         
         self.kDefaultShadowOpacity = kDefaultShadowOpacity
         self.kCircleTopPosition = kCircleTopPosition
@@ -246,6 +247,7 @@ public struct SCLAppearance {
         self.buttonCornerRadius = buttonCornerRadius
         
         self.hideWhenBackgroundViewIsTapped = hideWhenBackgroundViewIsTapped
+        self.buttonSeparatorColor = buttonSeparatorColor ?? UIColor.whiteColor()
     }
     
     mutating func setkWindowHeight(kWindowHeight:CGFloat) {
@@ -286,6 +288,7 @@ public class SCLAlertView: UIViewController {
     private var inputs = [UITextField]()
     private var input = [UITextView]()
     internal var buttons = [SCLButton]()
+    internal var buttonSeparators = [UIView]()
     private var selfReference: SCLAlertView?
     
     var subtitle: String?
@@ -374,9 +377,16 @@ public class SCLAlertView: UIViewController {
         let maxHeight = sz.height - 100 // max overall height
         var consumedHeight = CGFloat(0)
         consumedHeight += appearance.kTitleTop + appearance.kTitleHeight + appearance.kTitleBottomMargin
+        // space separating buttons from the content above + below
         consumedHeight += 14
-        consumedHeight += appearance.kButtonHeight * CGFloat(buttons.count)
+        if buttons.count == 2 {
+            consumedHeight += appearance.kButtonHeight
+        } else {
+            consumedHeight += appearance.kButtonHeight * CGFloat(buttons.count)
+        }
+        // total height of text fields
         consumedHeight += appearance.kTextFieldHeight * CGFloat(inputs.count)
+        // height of text view
         consumedHeight += appearance.kTextViewdHeight * CGFloat(input.count)
         let maxViewTextHeight = maxHeight - consumedHeight
         let viewTextWidth = appearance.kWindowWidth - totalHorizontalPadding
@@ -431,10 +441,33 @@ public class SCLAlertView: UIViewController {
             y += appearance.kTextViewdHeight
         }
         // Buttons
-        for btn in buttons {
-            btn.frame = CGRect(x:appearance.kHorizontalPadding, y:y, width:appearance.kWindowWidth - totalHorizontalPadding, height:35)
-            btn.layer.cornerRadius = appearance.buttonCornerRadius
+        if buttons.count == 2 {
+            let btn1 = buttons.first
+            let btn2 = buttons.last
+            
+            let sep1 = buttonSeparators.first
+            let sep2 = buttonSeparators.last
+            
+            let buttonWidth = appearance.kWindowWidth / 2
+            
+            sep1?.frame = CGRect(x: 0, y: y, width: appearance.kWindowWidth, height: 0.5)
+            sep2?.frame = CGRect(x: buttonWidth, y: y, width: 0.5, height: appearance.kButtonHeight)
+            if let sep1 = sep1, sep2 = sep2 {
+                contentView.bringSubviewToFront(sep1)
+                contentView.bringSubviewToFront(sep2)
+            }
+            
+            btn1?.frame = CGRect(x: 0, y: y, width: buttonWidth, height: appearance.kButtonHeight)
+            btn2?.frame = CGRect(x: buttonWidth, y: y, width: buttonWidth, height: appearance.kButtonHeight)
+            
             y += appearance.kButtonHeight
+        } else {
+            for (index, btn) in buttons.enumerate() {
+                let sep = buttonSeparators[index]
+                sep.frame = CGRect(x: 0, y: y, width: appearance.kWindowWidth, height: 0.5)
+                btn.frame = CGRect(x: 0, y: y, width: appearance.kWindowWidth, height: appearance.kButtonHeight)
+                y += appearance.kButtonHeight
+            }
         }
     }
     
@@ -526,6 +559,13 @@ public class SCLAlertView: UIViewController {
         btn.showDurationStatus = showDurationStatus
         contentView.addSubview(btn)
         buttons.append(btn)
+        
+        // add a button separator
+        let sep = UIView()
+        sep.backgroundColor = appearance.buttonSeparatorColor
+        contentView.addSubview(sep)
+        buttonSeparators.append(sep)
+        
         return btn
     }
     

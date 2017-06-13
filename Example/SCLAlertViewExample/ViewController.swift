@@ -33,53 +33,68 @@ class ViewController: UIViewController {
     }
     
     @IBAction func showSuccess(sender: AnyObject) {
-		let alert = SCLAlertView()
+        let alert = SCLAlertView(appearance: SCLAppearance.success, title: kSuccessTitle, subtitle: kSubtitle)
 		alert.addButton("First Button", target:self, selector:#selector(ViewController.firstButton))
 		alert.addButton("Second Button") {
 			print("Second button tapped")
 		}
-        alert.showSuccess(kSuccessTitle, subTitle: kSubtitle)
+        alert.present()
     }
     
     @IBAction func showError(sender: AnyObject) {
-		SCLAlertView().showError("Hold On...", subTitle:"You have not saved your Submission yet. Please save the Submission before accessing the Responses list. Blah de blah de blah, blah. Blah de blah de blah, blah.Blah de blah de blah, blah.Blah de blah de blah, blah.Blah de blah de blah, blah.Blah de blah de blah, blah.", closeButtonTitle:"OK")
-//        SCLAlertView().showError(self, title: kErrorTitle, subTitle: kSubtitle)
+        let alert = SCLAlertView(appearance: SCLAppearance.error, title: "Hold On...", subtitle: "You have not saved your Submission yet. Please save the Submission before accessing the Responses list. Blah de blah de blah, blah. Blah de blah de blah, blah.Blah de blah de blah, blah.Blah de blah de blah, blah.Blah de blah de blah, blah.Blah de blah de blah, blah.")
+        alert.addButton("Done") {
+            print("Done button tapped")
+        }
+		alert.present()
     }
     
     @IBAction func showNotice(sender: AnyObject) {
-        SCLAlertView().showNotice(kNoticeTitle, subTitle: kSubtitle)
+        let alert = SCLAlertView(appearance: SCLAppearance.notice, title: kNoticeTitle, subtitle: kSubtitle)
+        alert.addButton("Done") {
+            print("Done button tapped")
+        }
+        alert.present()
     }
     
     @IBAction func showWarning(sender: AnyObject) {
-        SCLAlertView().showWarning(kWarningTitle, subTitle: kSubtitle)
+        let alert = SCLAlertView(appearance: SCLAppearance.warning, title: kWarningTitle, subtitle: kSubtitle)
+        alert.addButton("Done") {
+            print("Done button tapped")
+        }
+        alert.present()
     }
     
     @IBAction func showInfo(sender: AnyObject) {
-        SCLAlertView().showInfo(kInfoTitle, subTitle: kSubtitle)
+        let alert = SCLAlertView(appearance: SCLAppearance.info, title: kInfoTitle, subtitle: kSubtitle)
+        alert.addButton("Done") {
+            print("Done button tapped")
+        }
+        alert.present()
     }
 
 	@IBAction func showEdit(sender: AnyObject) {
-        let appearance = SCLAlertView.SCLAppearance(showCloseButton: true)
-        let alert = SCLAlertView(appearance: appearance)
+        let alert = SCLAlertView(appearance: SCLAppearance.edit, title: kInfoTitle, subtitle: kSubtitle)
 		let txt = alert.addTextField("Enter your name")
         alert.addButton("Show Name") {
 			print("Text value: \(txt.text)")
 		}
-		alert.showEdit(kInfoTitle, subTitle:kSubtitle)
+        alert.present()
 	}
     
     
     @IBAction func showCustomSubview(sender: AnyObject) {
         // Create custom Appearance Configuration
-        let appearance = SCLAlertView.SCLAppearance(
+        let appearance = SCLAppearance(
             kTitleFont: UIFont(name: "HelveticaNeue", size: 20)!,
             kTextFont: UIFont(name: "HelveticaNeue", size: 14)!,
             kButtonFont: UIFont(name: "HelveticaNeue-Bold", size: 14)!,
+            kTitleBottomMargin: 42,
             showCloseButton: false
         )
         
         // Initialize SCLAlertView using custom Appearance
-        let alert = SCLAlertView(appearance: appearance)
+        let alert = SCLAlertView(appearance: appearance, title: "Login", subtitle: "")
         
         // Creat the subview
         let subview = UIView(frame: CGRectMake(0,0,216,70))
@@ -116,21 +131,25 @@ class ViewController: UIViewController {
             print("Duration Button tapped")
         }
 
-        alert.showInfo("Login", subTitle: "", duration: 10)
+        alert.present(duration: 10)
     }
     
     @IBAction func showCustomAlert(sender: AnyObject) {
-    
-        let alert = SCLAlertView()
+        let icon = UIImage(named:"custom_icon.png")
+        let color = UIColor.orangeColor()
+        
+        let appearance = SCLAppearance(
+            kCircleIconBackgroundColor: color,
+            kCircleIconImage: icon
+        )
+        
+        let alert = SCLAlertView(appearance: appearance, title: "Custom Color", subtitle: "Custom Color")
         alert.addButton("First Button", target:self, selector:#selector(ViewController.firstButton))
         alert.addButton("Second Button") {
             print("Second button tapped")
         }
         
-        let icon = UIImage(named:"custom_icon.png")
-        let color = UIColor.orangeColor()
-        
-        alert.showCustom("Custom Color", subTitle: "Custom color", color: color, icon: icon!)
+        alert.present()
     }
 	
 	func firstButton() {
