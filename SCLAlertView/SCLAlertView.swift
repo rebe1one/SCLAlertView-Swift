@@ -107,8 +107,6 @@ public struct SCLAppearance {
     public var circleIconHeight: CGFloat = 20.0
     public var titleTop: CGFloat = 30.0
     public var titleHeight:CGFloat = 25.0
-    public var windowWidth: CGFloat = 240.0
-    public var windowHeight: CGFloat = 178.0
     public var textHeight: CGFloat = 90.0
     public var textFieldHeight: CGFloat = 45.0
     public var textViewHeight: CGFloat = 80.0
@@ -136,8 +134,9 @@ public struct SCLAppearance {
     public var titleAlignment: NSTextAlignment = .Center
     public var textAlignment: NSTextAlignment = .Center
     
-    // Padding
+    // Spacing
     public var padding: CGFloat = 12.0
+    public var margin: CGFloat = 40.0
     
     // UI Options
     public var showCircularIcon: Bool = true
@@ -291,6 +290,13 @@ public class SCLAlertView: UIViewController {
         super.init(nibName:nibNameOrNil, bundle:nibBundleOrNil)
     }
     
+    private var alertWidth: CGFloat {
+        get {
+            let screenWidth = UIScreen.mainScreen().bounds.width
+            return screenWidth - (appearance.margin * 2)
+        }
+    }
+    
     private func setup() {
         // Set up main view
         view.frame = UIScreen.mainScreen().bounds
@@ -323,7 +329,7 @@ public class SCLAlertView: UIViewController {
         labelTitle.numberOfLines = 1
         labelTitle.textAlignment = appearance.titleAlignment
         labelTitle.font = appearance.titleFont
-        labelTitle.frame = CGRect(x:appearance.padding, y:appearance.titleTop, width: appearance.windowWidth - (appearance.padding * 2), height:appearance.titleHeight)
+        labelTitle.frame = CGRect(x: appearance.padding, y: appearance.titleTop, width: alertWidth - (appearance.padding * 2), height: appearance.titleHeight)
         // View text
         viewText.editable = false
         viewText.textAlignment = appearance.textAlignment
@@ -368,7 +374,7 @@ public class SCLAlertView: UIViewController {
         // height of text view
         consumedHeight += appearance.textViewHeight * CGFloat(input.count)
         let maxViewTextHeight = maxHeight - consumedHeight
-        let viewTextWidth = appearance.windowWidth - totalHorizontalPadding
+        let viewTextWidth = alertWidth - totalHorizontalPadding
         var viewTextHeight = appearance.textHeight
         
         // Check if there is a custom subview and add it over the textview
@@ -391,9 +397,9 @@ public class SCLAlertView: UIViewController {
         
         let windowHeight = consumedHeight + viewTextHeight
         // Set frames
-        var x = (sz.width - appearance.windowWidth) / 2
-        var y = (sz.height - windowHeight - (appearance.circleHeight / 8)) / 2
-        contentView.frame = CGRect(x:x, y:y, width:appearance.windowWidth, height:windowHeight)
+        var x = (sz.width - alertWidth) / 2
+        var y = (sz.height - alertWidth) / 2
+        contentView.frame = CGRect(x:x, y:y, width:alertWidth, height:windowHeight)
         contentView.layer.cornerRadius = appearance.contentViewCornerRadius
         if appearance.showDropShadow {
             shadowView.frame = contentView.frame
@@ -409,17 +415,17 @@ public class SCLAlertView: UIViewController {
         
         // Subtitle
         y = appearance.titleTop + appearance.titleHeight + titleOffset + appearance.titleBottomMargin
-        viewText.frame = CGRect(x:appearance.padding, y:y, width: appearance.windowWidth - totalHorizontalPadding, height:appearance.textHeight)
-        viewText.frame = CGRect(x:appearance.padding, y:y, width: viewTextWidth, height:viewTextHeight)
+        viewText.frame = CGRect(x: appearance.padding, y: y, width: alertWidth - totalHorizontalPadding, height: appearance.textHeight)
+        viewText.frame = CGRect(x: appearance.padding, y: y, width: viewTextWidth, height: viewTextHeight)
         // Text fields
         y += viewTextHeight + appearance.padding
         for txt in inputs {
-            txt.frame = CGRect(x:appearance.padding, y:y, width:appearance.windowWidth - totalHorizontalPadding, height:30)
+            txt.frame = CGRect(x: appearance.padding, y: y, width: alertWidth - totalHorizontalPadding, height: 30)
             txt.layer.cornerRadius = appearance.fieldCornerRadius
             y += appearance.textFieldHeight
         }
         for txt in input {
-            txt.frame = CGRect(x:appearance.padding, y:y, width:appearance.windowWidth - totalHorizontalPadding, height:70)
+            txt.frame = CGRect(x: appearance.padding, y: y, width: alertWidth - totalHorizontalPadding, height: 70)
             //txt.layer.cornerRadius = fieldCornerRadius
             y += appearance.textViewHeight
         }
@@ -431,9 +437,9 @@ public class SCLAlertView: UIViewController {
             let sep1 = buttonSeparators.first
             let sep2 = buttonSeparators.last
             
-            let buttonWidth = appearance.windowWidth / 2
+            let buttonWidth = alertWidth / 2
             
-            sep1?.frame = CGRect(x: 0, y: y, width: appearance.windowWidth, height: 0.5)
+            sep1?.frame = CGRect(x: 0, y: y, width: alertWidth, height: 0.5)
             sep2?.frame = CGRect(x: buttonWidth, y: y, width: 0.5, height: appearance.buttonHeight)
             if let sep1 = sep1, sep2 = sep2 {
                 contentView.bringSubviewToFront(sep1)
@@ -447,8 +453,8 @@ public class SCLAlertView: UIViewController {
         } else {
             for (index, btn) in buttons.enumerate() {
                 let sep = buttonSeparators[index]
-                sep.frame = CGRect(x: 0, y: y, width: appearance.windowWidth, height: 0.5)
-                btn.frame = CGRect(x: 0, y: y, width: appearance.windowWidth, height: appearance.buttonHeight)
+                sep.frame = CGRect(x: 0, y: y, width: alertWidth, height: 0.5)
+                btn.frame = CGRect(x: 0, y: y, width: alertWidth, height: appearance.buttonHeight)
                 y += appearance.buttonHeight
             }
         }
@@ -483,8 +489,6 @@ public class SCLAlertView: UIViewController {
     }
     
     public func addTextField(title:String?=nil)->UITextField {
-        // Update view height
-        appearance.windowHeight = appearance.windowHeight + appearance.textFieldHeight
         // Add text field
         let txt = UITextField()
         txt.borderStyle = UITextBorderStyle.RoundedRect
@@ -502,8 +506,6 @@ public class SCLAlertView: UIViewController {
     }
     
     public func addTextView()->UITextView {
-        // Update view height
-        appearance.windowHeight = appearance.windowHeight + appearance.textViewHeight
         // Add text view
         let txt = UITextView()
         // No placeholder with UITextView but you can use KMPlaceholderTextView library 
@@ -539,8 +541,6 @@ public class SCLAlertView: UIViewController {
     }
     
     private func addButton(title:String, backgroundColor:UIColor? = nil, textColor:UIColor? = nil, showDurationStatus:Bool=false)->SCLButton {
-        // Update view height
-        appearance.windowHeight = appearance.windowHeight + appearance.buttonHeight
         // Add button
         let btn = SCLButton()
         btn.layer.masksToBounds = true
@@ -672,11 +672,10 @@ public class SCLAlertView: UIViewController {
             viewText.attributedText = NSAttributedString(string: subtitle, attributes: attributes)
             // Adjust text view size, if necessary
             let str = subtitle as NSString
-            let sz = CGSize(width: appearance.windowWidth - (appearance.padding * 2), height:90)
+            let sz = CGSize(width: alertWidth, height: 90)
             let r = str.boundingRectWithSize(sz, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes:attributes, context:nil)
             let ht = ceil(r.size.height)
             if ht < appearance.textHeight {
-                appearance.windowHeight -= (appearance.textHeight - ht)
                 appearance.textHeight = ht
             }
         }
