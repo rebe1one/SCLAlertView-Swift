@@ -102,10 +102,10 @@ public struct SCLAppearance {
     public var shadowOpacity: CGFloat = 0.7
     public var circleTopPosition: CGFloat = -12.0
     public var circleBackgroundTopPosition: CGFloat = -15.0
-    public var circleHeightBackground: CGFloat = 62.0
-    public var circleHeight: CGFloat = 56.0
-    public var circleIconHeight: CGFloat = 20.0
-    public var titleTop: CGFloat = 30.0
+    public var circleHeightBackground: CGFloat = 100.0
+    public var circleHeight: CGFloat = 70.0
+    public var circleIconHeight: CGFloat = 60.0
+    public var titleTop: CGFloat = 50.0
     public var titleHeight:CGFloat = 25.0
     public var textHeight: CGFloat = 90.0
     public var textFieldHeight: CGFloat = 45.0
@@ -135,7 +135,7 @@ public struct SCLAppearance {
     public var textAlignment: NSTextAlignment = .Center
     
     // Spacing
-    public var padding: CGFloat = 12.0
+    public var padding: CGFloat = 25.0
     public var margin: CGFloat = 40.0
     
     // UI Options
@@ -870,23 +870,18 @@ public class SCLAlertViewStyleKit : NSObject {
     // Drawing Methods
     class func drawCheckmark() {
         // Checkmark Shape Drawing
-        let checkmarkShapePath = UIBezierPath()
-        checkmarkShapePath.moveToPoint(CGPointMake(73.25, 14.05))
-        checkmarkShapePath.addCurveToPoint(CGPointMake(64.51, 13.86), controlPoint1: CGPointMake(70.98, 11.44), controlPoint2: CGPointMake(66.78, 11.26))
-        checkmarkShapePath.addLineToPoint(CGPointMake(27.46, 52))
-        checkmarkShapePath.addLineToPoint(CGPointMake(15.75, 39.54))
-        checkmarkShapePath.addCurveToPoint(CGPointMake(6.84, 39.54), controlPoint1: CGPointMake(13.48, 36.93), controlPoint2: CGPointMake(9.28, 36.93))
-        checkmarkShapePath.addCurveToPoint(CGPointMake(6.84, 49.02), controlPoint1: CGPointMake(4.39, 42.14), controlPoint2: CGPointMake(4.39, 46.42))
-        checkmarkShapePath.addLineToPoint(CGPointMake(22.91, 66.14))
-        checkmarkShapePath.addCurveToPoint(CGPointMake(27.28, 68), controlPoint1: CGPointMake(24.14, 67.44), controlPoint2: CGPointMake(25.71, 68))
-        checkmarkShapePath.addCurveToPoint(CGPointMake(31.65, 66.14), controlPoint1: CGPointMake(28.86, 68), controlPoint2: CGPointMake(30.43, 67.26))
-        checkmarkShapePath.addLineToPoint(CGPointMake(73.08, 23.35))
-        checkmarkShapePath.addCurveToPoint(CGPointMake(73.25, 14.05), controlPoint1: CGPointMake(75.52, 20.75), controlPoint2: CGPointMake(75.7, 16.65))
-        checkmarkShapePath.closePath()
-        checkmarkShapePath.miterLimit = 4;
+        let bezierPath = UIBezierPath()
+        bezierPath.moveToPoint(CGPoint(x: 63.08, y: 17))
+        bezierPath.addLineToPoint(CGPoint(x: 70, y: 23.9))
+        bezierPath.addLineToPoint(CGPoint(x: 30.77, y: 63))
+        bezierPath.addLineToPoint(CGPoint(x: 10, y: 42.3))
+        bezierPath.addLineToPoint(CGPoint(x: 16.92, y: 35.4))
+        bezierPath.addLineToPoint(CGPoint(x: 30.77, y: 49.2))
+        bezierPath.addLineToPoint(CGPoint(x: 63.08, y: 17))
+        bezierPath.closePath()
         
         UIColor.whiteColor().setFill()
-        checkmarkShapePath.fill()
+        bezierPath.fill()
     }
     
     class func drawCross() {
