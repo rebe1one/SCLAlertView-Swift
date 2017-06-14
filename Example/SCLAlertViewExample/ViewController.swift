@@ -58,7 +58,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func showWarning(sender: AnyObject) {
-        let alert = SCLAlertView(style: .Warning, title: warningTitle, subtitle: kSubtitle)
+        let alert = SCLAlertView(style: .Warning, title: kWarningTitle, subtitle: kSubtitle)
         alert.addButton("Done") {
             print("Done button tapped")
         }
