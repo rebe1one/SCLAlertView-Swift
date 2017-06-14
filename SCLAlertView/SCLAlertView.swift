@@ -398,7 +398,7 @@ public class SCLAlertView: UIViewController {
         let windowHeight = consumedHeight + viewTextHeight
         // Set frames
         var x = (sz.width - alertWidth) / 2
-        var y = (sz.height - alertWidth) / 2
+        var y = (sz.height - windowHeight - (appearance.circleHeight / 8)) / 2 
         contentView.frame = CGRect(x:x, y:y, width:alertWidth, height:windowHeight)
         contentView.layer.cornerRadius = appearance.contentViewCornerRadius
         if appearance.showDropShadow {
