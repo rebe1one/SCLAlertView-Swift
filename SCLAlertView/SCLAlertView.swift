@@ -238,11 +238,11 @@ public class SCLAlertView: UIViewController {
     var dismissBlock : DismissBlock?
     private var inputs = [UITextField]()
     private var input = [UITextView]()
-    internal var buttons = [SCLButton]()
+    public var buttons = [SCLButton]()
     internal var buttonSeparators = [UIView]()
     private var selfReference: SCLAlertView?
     
-    var subtitle: String?
+    public var subtitle: String?
     
     public init(appearance: SCLAppearance? = nil, title: String? = nil, subtitle: String? = nil) {
         self.appearance = appearance ?? SCLAppearance()
