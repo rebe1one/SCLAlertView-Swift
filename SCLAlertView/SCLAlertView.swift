@@ -106,7 +106,6 @@ public struct SCLAppearance {
     public var circleHeight: CGFloat = 70.0
     public var circleIconHeight: CGFloat = 60.0
     public var titleTop: CGFloat = 50.0
-    public var titleHeight:CGFloat = 25.0
     public var textHeight: CGFloat = 90.0
     public var textFieldHeight: CGFloat = 45.0
     public var textViewHeight: CGFloat = 80.0
@@ -326,10 +325,13 @@ public class SCLAlertView: UIViewController {
         circleView.frame = CGRect(x:x, y:x, width:appearance.circleHeight, height:appearance.circleHeight)
         circleView.layer.cornerRadius = circleView.frame.size.height / 2
         // Title
-        labelTitle.numberOfLines = 1
+        labelTitle.numberOfLines = 0
         labelTitle.textAlignment = appearance.titleAlignment
         labelTitle.font = appearance.titleFont
-        labelTitle.frame = CGRect(x: appearance.padding, y: appearance.titleTop, width: alertWidth - (appearance.padding * 2), height: appearance.titleHeight)
+        labelTitle.text = self.title
+        labelTitle.frame = CGRect(x: 0, y: 0, width: alertWidth - (appearance.padding * 2), height: CGFloat.max)
+        labelTitle.sizeToFit()
+        labelTitle.frame = CGRect(x: appearance.padding, y: appearance.titleTop, width: alertWidth - (appearance.padding * 2), height: labelTitle.frame.height)
         // View text
         viewText.editable = false
         viewText.textAlignment = appearance.textAlignment
@@ -361,7 +363,7 @@ public class SCLAlertView: UIViewController {
         // computing the right size to use for the textView
         let maxHeight = sz.height - 100 // max overall height
         var consumedHeight = CGFloat(0)
-        consumedHeight += appearance.titleTop + appearance.titleHeight + appearance.titleBottomMargin
+        consumedHeight += appearance.titleTop + labelTitle.frame.height + appearance.titleBottomMargin
         // space separating buttons from the content above + below
         consumedHeight += appearance.padding
         if buttons.count == 2 {
@@ -414,7 +416,7 @@ public class SCLAlertView: UIViewController {
         labelTitle.frame = labelTitle.frame.offsetBy(dx: 0, dy: titleOffset)
         
         // Subtitle
-        y = appearance.titleTop + appearance.titleHeight + titleOffset + appearance.titleBottomMargin
+        y = appearance.titleTop + labelTitle.frame.height + titleOffset + appearance.titleBottomMargin
         viewText.frame = CGRect(x: appearance.padding, y: y, width: alertWidth - totalHorizontalPadding, height: appearance.textHeight)
         viewText.frame = CGRect(x: appearance.padding, y: y, width: viewTextWidth, height: viewTextHeight)
         // Text fields

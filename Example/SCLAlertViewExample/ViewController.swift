@@ -10,7 +10,7 @@ import UIKit
 import SCLAlertView
 
 
-let kSuccessTitle = "Congratulations"
+let kSuccessTitle = "Congratulations you've won the best prize ever"
 let kErrorTitle = "Connection error"
 let kNoticeTitle = "Notice"
 let kWarningTitle = "Warning"
