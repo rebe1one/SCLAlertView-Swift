@@ -296,6 +296,16 @@ public class SCLAlertView: UIViewController {
         }
     }
     
+    private func setTitleText() {
+        if let title = title where !title.isEmpty {
+            if let attributes = appearance.titleAttributes {
+                self.labelTitle.attributedText = NSAttributedString(string: title, attributes: attributes)
+            } else {
+                self.labelTitle.text = title
+            }
+        }
+    }
+    
     private func setup() {
         // Set up main view
         view.frame = UIScreen.mainScreen().bounds
@@ -328,7 +338,7 @@ public class SCLAlertView: UIViewController {
         labelTitle.numberOfLines = 0
         labelTitle.textAlignment = appearance.titleAlignment
         labelTitle.font = appearance.titleFont
-        labelTitle.text = self.title
+        setTitleText()
         labelTitle.frame = CGRect(x: 0, y: 0, width: alertWidth - (appearance.padding * 2), height: CGFloat.max)
         labelTitle.sizeToFit()
         labelTitle.frame = CGRect(x: appearance.padding, y: appearance.titleTop, width: alertWidth - (appearance.padding * 2), height: labelTitle.frame.height)
@@ -396,8 +406,8 @@ public class SCLAlertView: UIViewController {
                 viewText.scrollEnabled = false
             }
         }
-        
-        let windowHeight = consumedHeight + viewTextHeight
+        let titleOffset : CGFloat = appearance.showCircularIcon ? 0.0 : -12.0
+        let windowHeight = consumedHeight + viewTextHeight + titleOffset
         // Set frames
         var x = (sz.width - alertWidth) / 2
         var y = (sz.height - windowHeight - (appearance.circleHeight / 8)) / 2 
@@ -412,7 +422,6 @@ public class SCLAlertView: UIViewController {
         circleBG.frame = CGRect(x:x, y:y+6, width:appearance.circleHeightBackground, height:appearance.circleHeightBackground)
         
         //adjust Title frame based on circularIcon show/hide flag
-        let titleOffset : CGFloat = appearance.showCircularIcon ? 0.0 : -12.0
         labelTitle.frame = labelTitle.frame.offsetBy(dx: 0, dy: titleOffset)
         
         // Subtitle
@@ -660,13 +669,7 @@ public class SCLAlertView: UIViewController {
         viewColor = appearance.circleIconBackgroundColor ?? UIColorFromRGB(0x22B573)
         
         // Title
-        if let title = title where !title.isEmpty {
-            if let attributes = appearance.titleAttributes {
-                self.labelTitle.attributedText = NSAttributedString(string: title, attributes: attributes)
-            } else {
-                self.labelTitle.text = title
-            }
-        }
+        setTitleText()
         
         // Subtitle
         if let subtitle = subtitle where !subtitle.isEmpty {
